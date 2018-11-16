@@ -1,0 +1,14 @@
+{
+    "defaultSeverity": "error",
+    "extends": [
+        "tslint:recommended"
+    ],
+    "jsRules": {},
+    "rules": {},
+    "rulesDirectory": [],
+
+    "linterOptions": {
+        // One of the formatters listed at https://palantir.github.io/tslint/formatters/
+        "formatter": "stylish"
+    }
+}
