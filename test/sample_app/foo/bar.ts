@@ -1,2 +1,2 @@
 export const bar = "bar";
-export const baz = 'baz';
+export const baz = "bar";

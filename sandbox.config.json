@@ -1,0 +1,4 @@
+{
+  "description": "Codesandbox.io config file. See https://codesandbox.io/docs/configuration/#sandbox-configuration",
+  "template": "node"
+}

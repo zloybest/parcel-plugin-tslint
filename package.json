@@ -4,10 +4,11 @@
   "description": "A Parcel plugin for running tslint.",
   "main": "index.js",
   "scripts": {
-    "test": "PARCEL_WORKERS=1 node test.js"
+    "testWatch": "node test/watchSampleApp.js",
+    "testWatchDisabledEnv": "DISABLE_PARCEL_TSLINT_PLUGIN=true node test/watchSampleApp.js"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "clintharris@users.noreply.github.com",
+  "license": "MIT",
   "peerDependencies": {
     "parcel-bundler": "^1.10.3",
     "tslint": "^5.11.0",

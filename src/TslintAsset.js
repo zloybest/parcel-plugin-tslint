@@ -8,8 +8,16 @@ let tslintConfig;
 let formatter = 'prose';
 
 class TslintAsset extends TypeScriptAsset {
-  async load() {
-    let fileContents = await super.load();
+
+  async postProcess(generated) {
+    // `isWarmUp=true` means that Parcel is currently in the "warm up" phase: assets are being processed by the main
+    // process first, but will be processed AGAIN by the farm of worker processes a second time once they finish
+    // starting. Parcel works this way because, during startup, the main process can often process assets before the
+    // worker processes since they take time to start up. In effect: the very first bundle can be completed faster
+    // if it's all done on the main thread (vs. waiting on the workers).
+    if(this.options.isWarmUp || process.env.DISABLE_PARCEL_TSLINT_PLUGIN) {
+      return generated;
+    }
 
     if(!tslintConfig) {
 
@@ -20,7 +28,7 @@ class TslintAsset extends TypeScriptAsset {
         // a file. Because of this, logic exists below to skip the linting attempt if tslint.json couldn't be found.
         // We will display a one-time, "persistent" warning message in this scenario.
         logger.write('⚠️  Disabling tslint; unable to find tslint.json.', true);
-        return fileContents;
+        return generated;
       }
 
       try {
@@ -37,12 +45,23 @@ class TslintAsset extends TypeScriptAsset {
     }
 
     if(tslintConfig.path) {
+      logger.progress(`tslinting ${this.relativeName}...`);
       const linter = new tslint.Linter({ fix: false, formatter });
-      linter.lint(this.relativeName, fileContents, tslintConfig.results);
-      logger.write(linter.getResult().output, true);
+      linter.lint(this.relativeName, this.contents, tslintConfig.results);
+      const result = linter.getResult();
+
+      // This code (i.e., linting and collecting the results) will normally be run by a worker process. The code that
+      // displays the linting results (`../index.js`) is normally run by a separate process, however. Parcel will copy
+      // _some_ data between the processes, however, including the `cacheData` property of asset classes.
+      if(result.errorCount > 0) {
+        this.cacheData.tslintResult = result.output;
+      }
+      else {
+        this.cacheData.tslintResult = null;
+      }
     }
 
-    return fileContents;
+    return generated;
   }
 }
 
