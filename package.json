@@ -3,6 +3,10 @@
   "version": "0.0.1",
   "description": "A Parcel plugin for running tslint.",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/clintharris/parcel-plugin-tslint.git"
+  },
   "scripts": {
     "testWatch": "node test/watchSampleApp.js",
     "testWatchDisabledEnv": "DISABLE_PARCEL_TSLINT_PLUGIN=true node test/watchSampleApp.js"
