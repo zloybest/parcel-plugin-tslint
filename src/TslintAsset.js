@@ -1,6 +1,6 @@
 const fs = require('fs');
 const tslint = require('tslint');
-const logger = require('parcel-bundler/src/Logger');
+const logger = require('@parcel/logger');
 const stripJsonComments = require('strip-json-comments');
 const TypeScriptAsset = require('parcel-bundler/src/assets/TypeScriptAsset');
 
