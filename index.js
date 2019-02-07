@@ -1,4 +1,4 @@
-const logger = require('parcel-bundler/src/Logger');
+const logger = require('@parcel/logger');
 
 
 
